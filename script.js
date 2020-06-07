@@ -1,3 +1,10 @@
+var record_animation = false;
+var name = "image_"
+var total_frames = 200;
+var frame = 0;
+var loop = 0;
+var total_time = 2*Math.PI;
+var rate = total_time/total_frames;
 
 var enable_interaction = true;
 
@@ -7,7 +14,7 @@ var cross_size = size/2;
 var edge_thickness = 4;
 
 var t = 0;
-var rate = 0.01
+//var rate = 0.01
 
 var cross_fade = 1;  //true;
 var cross_colors =[170,240];
@@ -27,13 +34,13 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 
-startAnimating(30);
+startAnimating(25);
 
 
 function draw() { 
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = 400; //window.innerWidth;
+    canvas.height = 400; //window.innerHeight;
     
     ctx.fillStyle = 'rgba(255,255,255,1)'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -52,7 +59,7 @@ function draw() {
             
             min = Math.min(...cross_colors);
             max = Math.max(...cross_colors);
-            plus_color = min + (max-min)*(0.5+0.5*Math.sin((t + (i+j)*F)*2*Math.PI) );
+            plus_color = min + (max-min)*(0.5+0.5*Math.sin((.5*t + (i+j)*F)*2*Math.PI) );
     
             plus(size*(i), size*(j), 0, 0, cross_size, edge_thickness, plus_color, 1);
             
@@ -60,7 +67,9 @@ function draw() {
     }
     ctx.restore();
 
-    t += cross_fade*rate;
+    //t += cross_fade*rate;
+
+    cross_size = size/2 + size/2*Math.cos(t)
 
     
     if (enable_interaction) {
@@ -178,7 +187,34 @@ function startAnimating(fps) {
      if (elapsed > fpsInterval) {
          then = now - (elapsed % fpsInterval);
      
-         draw();  
+         draw();
+
+         frame = (frame+1)%total_frames;
+         time = rate*frame;
+         t = time;
+         
+         if(record_animation) {
+
+            if (loop === 1) { 
+            let frame_number = frame.toString().padStart(total_frames.toString().length, '0');
+            let filename = name+frame_number+'.png'
+                
+            dataURL = canvas.toDataURL();
+            var element = document.createElement('a');
+            element.setAttribute('href', dataURL);
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            }
+
+            if (frame + 1 === total_frames) {
+                loop += 1;
+            }
+
+            if (loop === 2) { stop_animation = true }
+        }
      }
  }
  
