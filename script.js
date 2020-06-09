@@ -65,18 +65,18 @@ function draw() {
     
     if (enable_interaction) {
         canvas.addEventListener('mousedown', e => {
-        //get_mouse_pos = true;
-        //getMousePosition(canvas, e)
+        get_mouse_pos = true;
+        getMousePosition(canvas, e)
         cross_fade = 0;
         });
           
         canvas.addEventListener('mouseup', e => {
-        //get_mouse_pos = false;
+        get_mouse_pos = false;
         cross_fade = 1;
         });
       
         canvas.addEventListener('mousemove', function(e) {
-          if(true) {
+          if(get_mouse_pos) {
             getMousePosition(canvas, e)
           }
         })
