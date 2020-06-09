@@ -54,7 +54,7 @@ function draw() {
             max = Math.max(...cross_colors);
             plus_color = min + (max-min)*(0.5+0.5*Math.sin((t + (i+j)*F)*2*Math.PI) );
     
-            plus(size*(i), size*(j), 0, 0, cross_size, edge_thickness, plus_color, 1);
+            plus(size*(i), size*(j), 0, 0, cross_size, edge_thickness, Math.floor(plus_color), 1);
             
         }
     }
